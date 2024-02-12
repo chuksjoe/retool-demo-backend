@@ -13,4 +13,5 @@ export const ormConfig: IOrmConfig = {
   password: 'aKpwLA2GjjJu43Eae5c3os38rZP2sdIZ',
   synchronize: true,
   autoLoadEntities: true,
+  ssl: true,
 };
