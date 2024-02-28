@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsEmail, IsDateString, IsNumberString, IsOptional } from 'class-validator';
-
+import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
+
 import { IDriver } from './drive.type';
 
 export class CreateDriverDto implements IDriver {
@@ -28,7 +29,7 @@ export class CreateDriverDto implements IDriver {
   @ApiProperty()
   @IsNotEmpty()
   @IsDateString()
-  dateOfBirth!: string;
+  dateOfBirth!: Date;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -47,3 +48,5 @@ export class CreateDriverDto implements IDriver {
   @IsNotEmpty()
   country!: string;
 }
+
+export class UpdateDriverDto extends PartialType(CreateDriverDto) {}

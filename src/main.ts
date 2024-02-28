@@ -1,10 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import { IEnvVariables } from './common/types/envVariables.types';
+
 (async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const envVariables = app.get(ConfigService<IEnvVariables, true>);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -13,9 +18,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
     }),
   );
 
+  app.enableCors({ origin: '*' });
+
   const swaggerConfig = new DocumentBuilder().setTitle('Retool Demo API').setDescription('').build();
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('', app, swaggerDoc);
 
-  await app.listen(3000);
+  await app.listen(envVariables.get('APP_PORT'), () =>
+    console.log(`Listening on port ${envVariables.get('APP_PORT')}`),
+  );
 })();

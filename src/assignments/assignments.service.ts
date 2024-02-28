@@ -65,7 +65,7 @@ export class AssignmentsService {
       assignmentType,
     };
 
-    return this.assignmentRepo.find({ where }).then((assignments) =>
+    return this.assignmentRepo.find({ where, order: { createdAt: 'DESC' } }).then((assignments) =>
       assignments.map((assignment) => ({
         ...assignment,
         isActive: assignment.effectiveEndDate === null,

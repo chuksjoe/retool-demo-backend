@@ -1,18 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Sse } from '@nestjs/common';
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 
 import { VehiclesService } from './vehicles.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { Observable, interval, map } from 'rxjs';
 
 @ApiTags('Vehicles')
 @Controller('vehicles')
 export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
 
+  @Sse('/sse')
+  sse(): Observable<MessageEvent> {
+    return interval(1000).pipe(map(() => ({ data: { hello: 'world' } }) as MessageEvent));
+  }
+
   @Post()
   create(@Body() createVehicleDto: CreateVehicleDto) {
     return this.vehiclesService.create(createVehicleDto);
+  }
+
+  @Post('bulk-upload')
+  bulkUpload() {
+    return 'work in progress';
   }
 
   @Get()

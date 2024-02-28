@@ -36,6 +36,9 @@ export class Vehicle extends IBase implements IVehicle {
   @Column({ type: 'varchar' })
   color: string;
 
+  @Column({ type: 'integer', nullable: true })
+  mileage: number;
+
   @Column({ type: 'timestamptz', name: 'purchase_date' })
   purchaseDate: Date;
 

@@ -27,7 +27,7 @@ export class Driver extends IBase implements IDriver {
   email: string;
 
   @Column({ type: 'date', name: 'dob' })
-  dateOfBirth: string;
+  dateOfBirth: Date;
 
   @Column({ type: 'text' })
   phone: string;

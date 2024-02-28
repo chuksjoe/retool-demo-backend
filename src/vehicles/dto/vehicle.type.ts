@@ -8,6 +8,7 @@ export interface IVehicle {
   yearOfProduction: number;
   purchaseCurrency: string;
   color: string;
+  mileage: number;
   purchaseDate: Date;
   supplier: string;
   regNo?: string;

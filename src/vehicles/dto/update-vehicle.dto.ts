@@ -64,6 +64,11 @@ export class UpdateVehicleDto extends PartialType(CreateVehicleDto) {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
+  mileage!: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsDateString()
   purchaseDate!: Date;
 

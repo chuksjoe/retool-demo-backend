@@ -63,6 +63,11 @@ export class CreateVehicleDto implements IVehicle {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
+  mileage!: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsDateString()
   purchaseDate!: Date;
 

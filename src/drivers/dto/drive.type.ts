@@ -6,9 +6,16 @@ export interface IDriver {
   lastName: string;
   middleName?: string;
   email: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   phone: string;
   imageUrl?: string;
   address: string;
   country: string;
+}
+
+export interface IDriversQuery {
+  page: number;
+  limit: number;
+  country: string;
+  search: string;
 }

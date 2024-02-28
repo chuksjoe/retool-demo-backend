@@ -1,13 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Sse, MessageEvent, Query } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+
 import { DriversService } from './drivers.service';
-import { CreateDriverDto } from './dto/create-driver.dto';
-import { UpdateDriverDto } from './dto/update-driver.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { CreateDriverDto, UpdateDriverDto } from './dto/driver.dto';
+import { IDriversQuery } from './dto/drive.type';
 
 @ApiTags('Drivers')
 @Controller('drivers')
 export class DriversController {
   constructor(private readonly driversService: DriversService) {}
+
+  @Sse('/sse')
+  sse(): Observable<MessageEvent> {
+    return this.driversService.subscribeToDriversFeed();
+  }
 
   @Post()
   create(@Body() payload: CreateDriverDto) {
@@ -15,8 +22,28 @@ export class DriversController {
   }
 
   @Get()
-  findAll() {
-    return this.driversService.findAll();
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'page number',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'search with DRN or name',
+  })
+  @ApiQuery({
+    name: 'country',
+    required: false,
+    description: 'filter by country',
+  })
+  findAll(@Query() query: IDriversQuery) {
+    return this.driversService.findAll(query);
   }
 
   @Get(':id')
